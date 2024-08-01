@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "opc",
+  "version": "${version}",
+  "name": "Offline Player Cache",
+  "description": "This is an example description! Tell everyone what your mod is about!",
+  "authors": [
+    "Your Name Here"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": ""
+  },
+  "license": "MIT",
+  "icon": "assets/opc/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.bibireden.opc.fabric.OfflinePlayerCacheInitializerFabric"
+    ]
+  },
+  "mixins": [
+    "opc.mixins.json",
+    "opc-common.mixins.json"
+  ],
+  "depends": {
+    "fabric": "*",
+    "minecraft": "~1.20.1"
+  }
+}

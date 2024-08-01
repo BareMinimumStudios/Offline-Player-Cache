@@ -1,0 +1,27 @@
+modLoader = "kotlinforforge"
+loaderVersion = "[4.9,)"
+issueTrackerURL = ""
+license = "MIT"
+
+[[mods]]
+modId = "opc"
+version = "${version}"
+displayName = "Offline Player Cache"
+authors = "Bare Minimum Studios"
+description = '''
+'''
+#logoFile = ""
+
+[[dependencies.opc]]
+modId = "forge"
+mandatory = true
+versionRange = "[47,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.opc]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20.1]"
+ordering = "NONE"
+side = "BOTH"

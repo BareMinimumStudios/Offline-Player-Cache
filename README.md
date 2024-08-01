@@ -82,7 +82,7 @@ dependencies {
 ```
 
 <details><summary>Alternatively, if you are using Kotlin DSL:</summary>
-    
+
 **`build.gradle.kts`**
 
 ```kotlin
@@ -105,155 +105,36 @@ dependencies {
 
 </details>
 
-### Migration to 1.0.0
+### Migration to 2.0.0
 
-- A considerable amount of internal and external changes have happened with the mod.
-- `CacheableValue` has been transformed into `CachedPlayerKey`, which better represents its purpose, which is to be a middleman in caching your data into the server.
+- A considerable amount of internal and external changes have happened with the mod (again).
+- It's record based, so you are able to register any `Record` with an associated identifier.
+- More docs coming soon...
 
 ### Using the Cache API
 - In order to utilize the cache, utilize the new `OfflinePlayerCacheAPI`, which will allow you to register `CachedPlayerKeys` to the cache, and permit you to obtain data based on the keys provided.
-- You can **call the constructor of the API** in order to use it, as long as you provide the server as an argument.
-> *The cache and its API should **never be used on the client. It requires a server instance to be used.***
 
 ### Registering & Using Keys
 
-A `CachedPlayerKey` has the important role of being a reference to the data you wish to store on the server.
-
-In order to utilize this key, you must extend from class itself, and override its abstract methods.
-
-`Identifiers` or `ResourceLocations` have been elevated to be a must to implement in the base constructor, so you will need to accommodate for this change.
-Creating one of these keys are relatively simple, all you need to write is the following code:
-
-Expect the values that will be written to your key to not be `null`, as this is checked for you before calling.
-
-### Fabric
-
-<details><summary>Kotlin</summary>
-  
 ```kotlin
-import com.bibireden.opc.api.CachedPlayerKey
-import net.minecraft.nbt.NbtCompound
-import net.minecraft.server.network.ServerPlayerEntity
-import net.minecraft.util.Identifier
+val LEVEL_KEY = ResourceLocation.tryBuild("opc", "level")!!
 
-class LevelKey : CachedPlayerKey<Int>(Identifier("your-mod-id", "your-key-path")) {
-    override fun get(player: ServerPlayerEntity): Int {
-        // this would be up to the end user's interpretation, so for now, anything will suffice.
-        return 404
+@JvmRecord
+data class Level(val level: Int) {
+    companion object {
+        val CODEC: Codec<Level> = RecordCodecBuilder.create {
+            it.group(Codec.INT.fieldOf("level").forGetter(Level::level)).apply(it, ::Level)
+        }
     }
+}
 
-    override fun readFromNbt(tag: NbtCompound): Int {
-        return tag.getInt("level")
-    }
-
-    override fun writeToNbt(tag: NbtCompound, value: Any) {
-        // Due to some limitations, type checking cannot be provided for the second argument, but you can almost safely guarantee this value will be associated with your type-parameter.
-        if (value is Int) tag.putInt("level", value)
+// static init
+init {
+    OfflinePlayerCacheAPI.register(LEVEL_KEY, TestingKeys.Level::class.java, TestingKeys.Level.CODEC) { player ->
+        TestingKeys.Level(player.experienceLevel)
     }
 }
 ```
-</details>
-
-<details><summary>Java</summary>
-
-```java
-import com.bibireden.opc.api.CachedPlayerKey;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.NotNull;
-
-public class LevelKey extends CachedPlayerKey<Integer> {
-    public LevelKey() {
-        super(new Identifier("your-mod-id", "your-key-path"));
-    }
-
-    @Override
-    public Integer get(@NotNull ServerPlayerEntity player) {
-        // this would be up to the end user's interpretation, so for now, anything will suffice.
-        return 404;
-    }
-
-    @Override
-    public @NotNull Integer readFromNbt(NbtCompound tag) {
-        return tag.getInt("level");
-    }
-
-    @Override
-    public void writeToNbt(NbtCompound tag, @NotNull Object value) {
-        // Due to some limitations, type checking cannot be provided for the second argument, but you can almost safely guarantee this value will be associated with your type-parameter.
-        tag.putInt("level", (Integer) value);
-    }
-}
-```
-
-</details>
-
-### Forge
-
-<details><summary>Kotlin</summary>
-  
-```kotlin
-import com.bibireden.opc.api.CachedPlayerKey
-import net.minecraft.nbt.CompoundTag
-import net.minecraft.resources.ResourceLocation
-import net.minecraft.world.entity.player.Player
-
-class LevelKey : CachedPlayerKey<String>(ResourceLocation("your-mod-id", "your-key-path")) {
-    override fun get(player: Player): String {
-        // this would be up to the end user's interpretation, so for now, anything will suffice.
-        return "playerex in forge when?"
-    }
-
-    override fun readFromNbt(tag: CompoundTag): String {
-        return tag.getString("message")
-    }
-
-    override fun writeToNbt(tag: CompoundTag, value: Any) {
-        tag.putString("message", value as String)
-    }
-}
-```
-
-</details>
-
-<details><summary>Java</summary>
-
-```java
-import com.bibireden.opc.api.CachedPlayerKey;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
-
-public class LevelKey extends CachedPlayerKey<Integer> {
-    public LevelKey() {
-        super(new ResourceLocation("your-mod-id", "your-key-path"));
-    }
-
-    @Override
-    public Integer get(@NotNull Player player) {
-        // this would be up to the end user's interpretation, so for now, anything will suffice.
-        return 404;
-    }
-
-    @Override
-    public @NotNull Integer readFromNbt(CompoundTag tag) {
-        return tag.getInt("level");
-    }
-
-    @Override
-    public void writeToNbt(CompoundTag tag, @NotNull Object value) {
-        // Due to some limitations, type checking cannot be provided for the second argument, but you can almost safely guarantee this value will be associated with your type-parameter.
-        tag.putInt("level", (Integer) value);
-    }
-}
-```
-
-</details>
-
-Registering your key works relatively the same. All you need to do is register the keys you created using **`OfflinePlayerCacheAPI.register`**.
-
 Once your key is registered, you are good to go!
 
 Keys will automatically be managed by the cache, and you should be able to see these keys through the commands we provide.
