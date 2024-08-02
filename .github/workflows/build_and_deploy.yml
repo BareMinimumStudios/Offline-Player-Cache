@@ -46,15 +46,19 @@ jobs:
         run: |
           minecraft_version_val=$(grep "minecraft_version" gradle.properties | cut -d'+' -f2 | tr -d '\n')
           echo "minecraft_version=$minecraft_version_val" >> $GITHUB_OUTPUT
-      - name: deploy with mc-publish
+          
+      - name: deploy fabric! (mc-publish)
         if: github.ref == 'refs/heads/${{ env.BRANCH_PREFIX }}'
         uses: Kir-Antipov/mc-publish@v3.3
         with:
           files: |
             src/fabric/build/libs/!(*-@(dev|sources|javadoc)).jar
             src/fabric/build/libs/*-@(dev|sources|javadocs).jar
-            src/forge/build/libs/!(*-@(dev|sources|javadoc)).jar
-            src/forge/build/libs/*-@(dev|sources|javadocs).jar
+
+          modrinth-unfeature-mode: false
+
+          modrinth-id: oLPaySSb
+          curseforge-id: 1019391
 
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           modrinth-token: "${{ secrets.MODRINTH_TOKEN }}"
@@ -68,9 +72,44 @@ jobs:
 
           loaders: |
             fabric
+            quilt      
+
+          dependencies: |
+            fabric-api@0.83.0+1.20.1(required){modrinth:P7dR8mSH}{curseforge:306612}#(ignore:github)
+            fabric-language-kotlin@1.9.5+kotlin.1.8.22(required){modrinth:Ha28R6CL}{curseforge:308769}#(ignore:github)
+
+          game-versions: "${{ steps.minecraft_version.outputs.minecraft_version }}"
+          java: "${{ matrix.java }}"
+
+      - name: deploy forge! (mc-publish)
+        if: github.ref == 'refs/heads/${{ env.BRANCH_PREFIX }}'
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          files: |
+            src/forge/build/libs/!(*-@(dev|sources|javadoc)).jar
+            src/forge/build/libs/*-@(dev|sources|javadocs).jar
+
+          modrinth-unfeature-mode: false
+
+          modrinth-id: oLPaySSb
+          curseforge-id: 1019391
+
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          modrinth-token: "${{ secrets.MODRINTH_TOKEN }}"
+
+          github-tag: ${{ steps.mod_version.outputs.mod_version }}
+          github-token: ${{ secrets.REPOSITORY_TOKEN }}
+          github-commitish: ${{ steps.commitish.outputs.commitish }}
+
+          version: "${{ steps.outputs.mod_version }}"
+          changelog-file: CHANGELOG.md
+
+          loaders: |
             forge
-            quilt
             neoforge
+
+          dependencies: |
+            kotlinforforge@4.10.0(required){modrinth:ordsPcFz}{curseforge:351264}#(ignore:github)
 
           game-versions: "${{ steps.minecraft_version.outputs.minecraft_version }}"
           java: "${{ matrix.java }}"
