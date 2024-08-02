@@ -3,16 +3,17 @@
   "id": "opc",
   "version": "${version}",
   "name": "Offline Player Cache",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "description": "Allows the ability to cache player data to the server based on cached keys.",
   "authors": [
-    "Your Name Here"
+    "Bare Minimum Studios",
+    "CleverNucleus (former author)"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": ""
+    "homepage": "https://bareminimumstudios.github.io/Bare-Minimum-Docs/",
+    "sources": "https://github.com/BareMinimumStudios/Offline-Player-Cache"
   },
   "license": "MIT",
-  "icon": "assets/opc/icon.png",
+  "icon": "assets/opc/opc_icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -25,6 +26,8 @@
   ],
   "depends": {
     "fabric": "*",
-    "minecraft": "~1.20.1"
+    "minecraft": "~1.20.1",
+    "fabric-api": "*",
+    "fabric-language-kotlin": ">=1.10.19+kotlin.1.9.23"
   }
 }

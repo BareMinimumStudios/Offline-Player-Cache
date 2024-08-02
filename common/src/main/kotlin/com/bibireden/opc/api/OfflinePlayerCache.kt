@@ -9,8 +9,16 @@ interface OfflinePlayerCache {
     /** Current **usernames** in the cache. */
     val usernames: Collection<String>
 
+    /** Checks if the player [UUID] is in the cache or not. */
+    fun isPlayerCached(uuid: UUID): Boolean
+
+    /** Checks if the player with the username is in the cache or not. */
+    fun isPlayerCached(username: String): Boolean
+
+    /** Attempts to get a username from a cached player based on the [UUID] of that player. */
     fun getUsernameFromUUID(uuid: UUID): String?
 
+    /** Attempts to get a [UUID] from a cached player based on the **username** of that player. */
     fun getUUIDFromUsername(username: String): UUID?
 
     /** Attempts to get an entry based on the [UUID] of the player. */
@@ -41,10 +49,4 @@ interface OfflinePlayerCache {
 
     /** Gets the currently cached entry related to this player by the username. */
     fun getPlayerCache(username: String): Optional<Map<Class<out Record>, Record>>
-
-    /** Checks if the player [UUID] is in the cache or not. */
-    fun isPlayerCached(uuid: UUID): Boolean
-
-    /** Checks if the player with the username is in the cache or not. */
-    fun isPlayerCached(username: String): Boolean
 }

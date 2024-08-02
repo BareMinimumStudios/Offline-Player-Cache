@@ -19,7 +19,7 @@ typealias PlayerSerializer<R> = (Player) -> R
 object OfflinePlayerCacheAPI {
     /** The static registry of keys. Contains a view of what is currently registered in the API. */
     @JvmStatic
-    val cachedKeys: BiMap<ResourceLocation, Class<out Record>>
+    val registeredKeys: BiMap<ResourceLocation, Class<out Record>>
         get() = HashBiMap.create(OfflinePlayerCacheImpl.keys)
 
     /**

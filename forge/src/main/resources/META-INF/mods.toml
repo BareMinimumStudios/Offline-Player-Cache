@@ -1,6 +1,6 @@
 modLoader = "kotlinforforge"
 loaderVersion = "[4.9,)"
-issueTrackerURL = ""
+issueTrackerURL = "https://github.com/BareMinimumStudios/Offline-Player-Cache/issues"
 license = "MIT"
 
 [[mods]]
@@ -8,9 +8,9 @@ modId = "opc"
 version = "${version}"
 displayName = "Offline Player Cache"
 authors = "Bare Minimum Studios"
-description = '''
-'''
-#logoFile = ""
+description = '''Allows the ability to cache player data to the server based on cached keys.'''
+logoFile = "opc_icon.png"
+displayURL="https://github.com/BareMinimumStudios/Offline-Player-Cache"
 
 [[dependencies.opc]]
 modId = "forge"

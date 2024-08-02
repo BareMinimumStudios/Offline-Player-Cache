@@ -13,9 +13,7 @@ import net.minecraft.commands.arguments.ResourceLocationArgument
 import net.minecraft.commands.arguments.UuidArgument
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.MutableComponent
-import net.minecraft.resources.ResourceLocation
 import java.util.UUID
-import kotlin.math.abs
 
 /**
  * The command-tree for the **`OfflinePlayerCache`**.
@@ -26,7 +24,7 @@ import kotlin.math.abs
  * */
 object OfflinePlayerCacheCommands {
     private val SUGGEST_KEYS = SuggestionProvider<CommandSourceStack> { _, builder ->
-        SharedSuggestionProvider.suggestResource(OfflinePlayerCacheAPI.cachedKeys.keys, builder)
+        SharedSuggestionProvider.suggestResource(OfflinePlayerCacheAPI.registeredKeys.keys, builder)
         builder.buildFuture()
     }
     private val SUGGEST_NAMES = SuggestionProvider<CommandSourceStack> { ctx, builder ->
@@ -134,7 +132,7 @@ object OfflinePlayerCacheCommands {
             ctx.source.sendSuccess({Component.literal("Found: $otherID").withStyle(ChatFormatting.GREEN)}, false)
             ctx.source.sendSuccess({Component.literal("Listing [${values.size}] value(s):").withStyle(ChatFormatting.GREEN)}, false)
             values.forEach { (key, value) ->
-                ctx.source.sendSuccess({Component.literal( "${OfflinePlayerCacheAPI.cachedKeys.inverse()[key]} = $value").withStyle(ChatFormatting.WHITE)}, false);
+                ctx.source.sendSuccess({Component.literal( "${OfflinePlayerCacheAPI.registeredKeys.inverse()[key]} = $value").withStyle(ChatFormatting.WHITE)}, false);
             }
         }
 
@@ -145,7 +143,7 @@ object OfflinePlayerCacheCommands {
         val id = input(ctx)
         val identifier = ResourceLocationArgument.getId(ctx, "key")
 
-        val value = OfflinePlayerCacheAPI.cachedKeys[identifier]
+        val value = OfflinePlayerCacheAPI.registeredKeys[identifier]
 
         if (value == null) {
             ctx.source.sendSuccess(nullKeyMessage(id), false)
@@ -182,7 +180,7 @@ object OfflinePlayerCacheCommands {
     private fun <T> executeGetKey(ctx: CommandContext<CommandSourceStack>, input: (CommandContext<CommandSourceStack>) -> T): Int {
         val id = input(ctx)
         val identifier = ResourceLocationArgument.getId(ctx, "key")
-        val key = OfflinePlayerCacheAPI.cachedKeys[identifier]
+        val key = OfflinePlayerCacheAPI.registeredKeys[identifier]
 
         if (key == null) {
             ctx.source.sendSuccess(nullKeyMessage(id), false)

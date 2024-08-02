@@ -27,6 +27,7 @@ class OfflinePlayerCacheImpl(
         private val codecs: MutableMap<ResourceLocation, Codec<in Record>> = mutableMapOf()
         private val serializers: MutableMap<ResourceLocation, PlayerSerializer<Record>> = mutableMapOf()
 
+        @Suppress("UNCHECKED_CAST")
         fun <R : Record> register(id: ResourceLocation, key: Class<R>, codec: Codec<R>, getter: PlayerSerializer<R>) {
             if (_keys.containsKey(id)) throw IllegalStateException("Cache ID#: $id is already registered!")
 
@@ -37,10 +38,10 @@ class OfflinePlayerCacheImpl(
     }
 
     val uuids: Collection<UUID>
-        get() = this.usernamesToUUID.values.toList()
+        get() = this.usernamesToUUID.values
 
     val usernames: Collection<String>
-        get() = this.usernamesToUUID.keys.toList()
+        get() = this.usernamesToUUID.keys
 
     fun getUsernameFromUUID(uuid: UUID): String? = this.usernamesToUUID.inverse()[uuid]
 
