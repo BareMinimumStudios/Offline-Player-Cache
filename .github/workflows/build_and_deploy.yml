@@ -71,11 +71,11 @@ jobs:
         with:
           name: ${{ steps.mod_version.outputs.mod_version }}
           files: |
-            fabric/build/libs/!(*-@(dev|sources|javadoc)).jar
-            fabric/build/libs/*-@(dev|sources|javadocs).jar
+            fabric/build/libs/!(*-@(dev|sources|javadoc|shadow)).jar
+            fabric/build/libs/*-@(dev|sources|javadoc|shadow).jar
           github-files: |
-            fabric/build/libs/!(*-@(dev|sources|javadoc)).jar
-            fabric/build/libs/*-@(dev|sources|javadocs).jar
+            fabric/build/libs/!(*-@(dev|sources|javadoc|shadow)).jar
+            fabric/build/libs/*-@(dev|sources|javadoc|shadow).jar
 
           modrinth-id: oLPaySSb
           curseforge-id: 1019391
@@ -108,11 +108,11 @@ jobs:
           name: ${{ steps.mod_version.outputs.mod_version }}
 
           files: |
-            forge/build/libs/!(*-@(dev|sources|javadoc)).jar
-            forge/build/libs/*-@(dev|sources|javadocs).jar
+            forge/build/libs/!(*-@(dev|sources|javadoc|shadow)).jar
+            forge/build/libs/*-@(dev|sources|javadoc|shadow).jar
           github-files: |
-            forge/build/libs/!(*-@(dev|sources|javadoc)).jar
-            forge/build/libs/*-@(dev|sources|javadocs).jar
+            forge/build/libs/!(*-@(dev|sources|javadoc|shadow)).jar
+            forge/build/libs/*-@(dev|sources|javadoc|shadow).jar
 
           modrinth-id: oLPaySSb
           curseforge-id: 1019391
