@@ -37,8 +37,9 @@ jobs:
         id: mod_version
         run: |
           mod_version_val=$(grep "mod_version" gradle.properties | cut -d'=' -f2 | tr -d '\n')
+          commitish_val=$(grep "mod_version" gradle.properties | cut -d'=' -f2 | cut -d'-' -f1 | tr -d '\n')
           echo "mod_version=$mod_version_val" >> $GITHUB_OUTPUT
-          echo "commitish=$mod_version_val/main" >> $GITHUB_OUTPUT
+          echo "commitish=$commitish_val/main" >> $GITHUB_OUTPUT
       - name: get minecraft version
         if: github.ref == 'refs/heads/${{ env.BRANCH_PREFIX }}'
         id: minecraft_version
