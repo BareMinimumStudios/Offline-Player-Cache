@@ -36,8 +36,10 @@ jobs:
         if: github.ref == 'refs/heads/${{ env.BRANCH_PREFIX }}'
         id: mod_version
         run: |
+          archived_name=$(grep "archives_base_name" gradle.properties | cut -d'=' -f2 | tr -d '\n')
           mod_version_val=$(grep "mod_version" gradle.properties | cut -d'=' -f2 | tr -d '\n')
           commitish_val=$(grep "mod_version" gradle.properties | cut -d'=' -f2 | cut -d'-' -f1 | tr -d '\n')
+          echo "archive_name=$archived_name" >> $GITHUB_OUTPUT
           echo "mod_version=$mod_version_val" >> $GITHUB_OUTPUT
           echo "commitish=$commitish_val/main" >> $GITHUB_OUTPUT
       - name: get minecraft version
@@ -51,23 +53,22 @@ jobs:
         if: github.ref == 'refs/heads/${{ env.BRANCH_PREFIX }}'
         uses: Kir-Antipov/mc-publish@v3.3
         with:
+          name: ${{ steps.mod_version.outputs.mod_version }}~fabric
           files: |
             src/fabric/build/libs/!(*-@(dev|sources|javadoc)).jar
             src/fabric/build/libs/*-@(dev|sources|javadocs).jar
-
-          modrinth-unfeature-mode: false
 
           modrinth-id: oLPaySSb
           curseforge-id: 1019391
 
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
-          modrinth-token: "${{ secrets.MODRINTH_TOKEN }}"
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
 
           github-tag: ${{ steps.mod_version.outputs.mod_version }}
           github-token: ${{ secrets.REPOSITORY_TOKEN }}
           github-commitish: ${{ steps.commitish.outputs.commitish }}
 
-          version: "${{ steps.outputs.mod_version }}"
+          version: "${{ steps.outputs.mod_version }}-fabric"
           changelog-file: CHANGELOG.md
 
           loaders: |
@@ -85,11 +86,10 @@ jobs:
         if: github.ref == 'refs/heads/${{ env.BRANCH_PREFIX }}'
         uses: Kir-Antipov/mc-publish@v3.3
         with:
+          name: ${{ steps.mod_version.outputs.mod_version }}~forge
           files: |
             src/forge/build/libs/!(*-@(dev|sources|javadoc)).jar
             src/forge/build/libs/*-@(dev|sources|javadocs).jar
-
-          modrinth-unfeature-mode: false
 
           modrinth-id: oLPaySSb
           curseforge-id: 1019391
@@ -101,7 +101,7 @@ jobs:
           github-token: ${{ secrets.REPOSITORY_TOKEN }}
           github-commitish: ${{ steps.commitish.outputs.commitish }}
 
-          version: "${{ steps.outputs.mod_version }}"
+          version: "${{ steps.outputs.mod_version }}-forge"
           changelog-file: CHANGELOG.md
 
           loaders: |
