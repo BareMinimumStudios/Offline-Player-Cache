@@ -69,11 +69,12 @@ jobs:
         if: github.ref == 'refs/heads/${{ env.BRANCH_PREFIX }}'
         uses: Kir-Antipov/mc-publish@v3.3
         with:
-          name: ${{ steps.mod_version.outputs.mod_version }}~fabric
+          name: ${{ steps.mod_version.outputs.mod_version }}
           files: |
             fabric/build/libs/!(*-@(dev|sources|javadoc)).jar
             fabric/build/libs/*-@(dev|sources|javadocs).jar
           github-files: |
+            fabric/build/libs/!(*-@(dev|sources|javadoc)).jar
             fabric/build/libs/*-@(dev|sources|javadocs).jar
 
           modrinth-id: oLPaySSb
@@ -86,7 +87,7 @@ jobs:
           github-token: ${{ secrets.REPOSITORY_TOKEN }}
           github-commitish: ${{ steps.commitish.outputs.commitish }}
 
-          version: "${{ steps.outputs.mod_version }}-fabric"
+          version: ${{ steps.mod_version.outputs.mod_version }}-fabric
           changelog-file: CHANGELOG.md
 
           loaders: |
@@ -104,12 +105,13 @@ jobs:
         if: github.ref == 'refs/heads/${{ env.BRANCH_PREFIX }}'
         uses: Kir-Antipov/mc-publish@v3.3
         with:
-          name: ${{ steps.mod_version.outputs.mod_version }}~forge
+          name: ${{ steps.mod_version.outputs.mod_version }}
 
           files: |
             forge/build/libs/!(*-@(dev|sources|javadoc)).jar
             forge/build/libs/*-@(dev|sources|javadocs).jar
           github-files: |
+            forge/build/libs/!(*-@(dev|sources|javadoc)).jar
             forge/build/libs/*-@(dev|sources|javadocs).jar
 
           modrinth-id: oLPaySSb
@@ -122,7 +124,7 @@ jobs:
           github-token: ${{ secrets.REPOSITORY_TOKEN }}
           github-commitish: ${{ steps.commitish.outputs.commitish }}
 
-          version: "${{ steps.outputs.mod_version }}-forge"
+          version: ${{ steps.mod_version.outputs.mod_version }}-forge
           changelog-file: CHANGELOG.md
 
           loaders: |

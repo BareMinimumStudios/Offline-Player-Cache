@@ -199,7 +199,12 @@ object OfflinePlayerCacheCommands {
 
         ctx.source.sendSuccess(fetchingMessage(id), false)
         ctx.source.sendSuccess({Component.literal("Found: $otherId").withStyle(ChatFormatting.GREEN)}, false)
-        ctx.source.sendSuccess({ Component.literal("$identifier = $value").withStyle(ChatFormatting.WHITE)}, false)
+        if (value.isPresent) {
+            ctx.source.sendSuccess({ Component.literal("$identifier = ${value.get()}").withStyle(ChatFormatting.WHITE)}, false)
+        }
+        else {
+            ctx.source.sendSuccess(nullKeyMessage(identifier), false)
+        }
 
         return 1
     }
