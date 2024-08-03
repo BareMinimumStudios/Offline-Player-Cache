@@ -22,7 +22,7 @@ subprojects {
         mavenLocal()
         maven("https://maven.parchmentmc.org")
         maven("https://maven.fabricmc.net/")
-        maven("https://maven.minecraftforge.net/")
+        maven("https://maven.neoforged.net/releases/")
         maven("https://thedarkcolour.github.io/KotlinForForge/")
 	    maven("https://maven.quiltmc.org/repository/release/")
     }
@@ -54,7 +54,7 @@ allprojects {
 
     tasks.withType<JavaCompile>().configureEach {
         options.encoding = "UTF-8"
-        options.release.set(17)
+        options.release.set(21)
     }
 
     java.withSourcesJar()

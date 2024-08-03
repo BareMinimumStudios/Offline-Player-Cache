@@ -1,2 +1,2 @@
 ## Changes 🌽
-- This update just served to remove a duplicate initializer (Forge).
+- Updated to 1.21 (yes, other mods will follow suit as well).

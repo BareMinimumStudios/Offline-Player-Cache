@@ -1,5 +1,5 @@
 modLoader = "kotlinforforge"
-loaderVersion = "[4.9,)"
+loaderVersion = "[4,)"
 issueTrackerURL = "https://github.com/BareMinimumStudios/Offline-Player-Cache/issues"
 license = "MIT"
 
@@ -7,21 +7,27 @@ license = "MIT"
 modId = "opc"
 version = "${version}"
 displayName = "Offline Player Cache"
-authors = "Bare Minimum Studios"
+authors = "bibireden, Bare Minimum Studios"
 description = '''Allows the ability to cache player data to the server based on cached keys.'''
 logoFile = "opc_icon.png"
-displayURL="https://github.com/BareMinimumStudios/Offline-Player-Cache"
+displayURL = "https://github.com/BareMinimumStudios/Offline-Player-Cache"
 
 [[dependencies.opc]]
-modId = "forge"
+modId = "neoforge"
 mandatory = true
-versionRange = "[47,)"
+versionRange = "[21.0.0-beta,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.opc]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.20.1]"
+versionRange = "[1.21]"
 ordering = "NONE"
 side = "BOTH"
+
+[[mixins]]
+config="opc.mixins.json"
+
+[[mixins]]
+config="opc-common.mixins.json"

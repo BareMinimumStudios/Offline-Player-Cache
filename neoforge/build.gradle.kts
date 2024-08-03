@@ -4,7 +4,7 @@ plugins {
 
 architectury {
     platformSetupLoomIde()
-    forge()
+    neoForge()
 }
 
 val minecraftVersion = project.properties["minecraft_version"] as String
@@ -14,43 +14,27 @@ configurations {
     create("shadowCommon")
     compileClasspath.get().extendsFrom(configurations["common"])
     runtimeClasspath.get().extendsFrom(configurations["common"])
-    getByName("developmentForge").extendsFrom(configurations["common"])
+    getByName("developmentNeoForge").extendsFrom(configurations["common"])
 }
 
 loom {
     accessWidenerPath.set(project(":common").loom.accessWidenerPath)
-
-    forge {
-        convertAccessWideners.set(true)
-        extraAccessWideners.add(loom.accessWidenerPath.get().asFile.name)
-
-        mixinConfig("opc-common.mixins.json")
-        mixinConfig("opc.mixins.json")
-    }
-
-    // Forge Datagen Gradle config.  Remove if not using Forge datagen
-    runs.create("datagen") {
-        data()
-        programArgs("--all", "--mod", "opc")
-        programArgs("--output", project(":common").file("src/main/generated/resources").absolutePath)
-        programArgs("--existing", project(":common").file("src/main/resources").absolutePath)
-    }
 }
 
 dependencies {
-    forge("net.minecraftforge:forge:$minecraftVersion-${project.properties["forge_version"]}")
-    implementation("thedarkcolour:kotlinforforge:${project.properties["kotlin_forge_version"]}")
+    neoForge("net.neoforged:neoforge:${project.properties["neoforge_version"]}")
+    implementation("thedarkcolour:kotlinforforge-neoforge:${project.properties["kotlin_forge_version"]}")
 
     "common"(project(":common", "namedElements")) { isTransitive = false }
-    "shadowCommon"(project(":common", "transformProductionForge")) { isTransitive = false }
+    "shadowCommon"(project(":common", "transformProductionNeoForge")) { isTransitive = false }
 }
 
 tasks {
-    base.archivesName.set(base.archivesName.get() + "-Forge")
+    base.archivesName.set(base.archivesName.get() + "-NeoForge")
     processResources {
         inputs.property("version", project.version)
 
-        filesMatching("META-INF/mods.toml") {
+        filesMatching("META-INF/neoforge.mods.toml") {
             expand(mapOf("version" to project.version))
         }
     }
@@ -71,7 +55,7 @@ tasks {
     sourcesJar {
         val commonSources = project(":common").tasks.sourcesJar
         dependsOn(commonSources)
-        from(commonSources.get().archiveFile.map { zipTree(it) })
+        from(commonSources.get().archiveFile.map(::zipTree))
     }
 }
 
@@ -83,8 +67,8 @@ components {
 }
 
 publishing {
-    publications.create<MavenPublication>("mavenForge") {
-        artifactId = "${project.properties["archives_base_name"]}" + "-Forge"
+    publications.create<MavenPublication>("mavenNeoForge") {
+        artifactId = "${project.properties["archives_base_name"]}" + "-NeoForge"
         from(components["java"])
     }
 

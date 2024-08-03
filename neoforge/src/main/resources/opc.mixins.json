@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "com.bibireden.opc.fabric.mixin",
+  "package": "com.bibireden.opc.neoforge.mixin",
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
   "client": [],

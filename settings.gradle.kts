@@ -1,7 +1,7 @@
 pluginManagement.repositories {
     maven("https://maven.fabricmc.net/")
     maven("https://maven.architectury.dev/")
-    maven("https://maven.minecraftforge.net/")
+    maven("https://maven.neoforged.net/")
     gradlePluginPortal()
 }
 
@@ -14,6 +14,6 @@ develocity.buildScan {
     termsOfUseAgree = "yes"
 }
 
-include("common", "fabric", "forge")
+include("common", "fabric", "neoforge")
 
 rootProject.name = "OfflinePlayerCache"

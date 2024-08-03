@@ -33,9 +33,9 @@ public class PrimaryLevelDataMixin implements OfflinePlayerCacheData {
     }
 
     @Inject(method = "parse", at = @At("RETURN"))
-    private static <T> void parseTag(Dynamic<T> dynamic, DataFixer fixerUpper, int playerDataVersion, @Nullable CompoundTag loadedPlayerTag, LevelSettings settings, LevelVersion levelVersion, PrimaryLevelData.SpecialWorldProperty specialWorldProperty, WorldOptions worldOptions, Lifecycle worldGenSettingsLifecycle, CallbackInfoReturnable<PrimaryLevelData> cir) {
+    private static <T> void parseTag(Dynamic<T> tag, LevelSettings levelSettings, PrimaryLevelData.SpecialWorldProperty specialWorldProperty, WorldOptions worldOptions, Lifecycle worldGenSettingsLifecycle, CallbackInfoReturnable<PrimaryLevelData> cir) {
         var levelData = cir.getReturnValue();
-        dynamic.get(OfflinePlayerCacheInitializer.MOD_ID).result()
+        tag.get(OfflinePlayerCacheInitializer.MOD_ID).result()
             .map(Dynamic::getValue)
             .ifPresent(nbt -> ((OfflinePlayerCacheData) levelData).opc$data().parseTag((ListTag) nbt));
     }

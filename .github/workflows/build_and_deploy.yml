@@ -1,4 +1,4 @@
-name: Deployment (J17)
+name: Deployment (J21)
 on:
   push:
     branches-ignore:
@@ -13,7 +13,7 @@ jobs:
       BRANCH_PREFIX: $(cat gradle.properties | grep mod_version | cut -d'+' -f2)
     strategy:
       matrix:
-        java: [17]
+        java: [21]
     runs-on: ubuntu-latest
     steps:
       - name: check environment variables
@@ -26,23 +26,23 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: ${{ matrix.java }}
-          distribution: 'microsoft'
+          distribution: "microsoft"
       - name: make gradle wrapper executable
         run: chmod +x ./gradlew
       - name: build
         if: github.ref == 'refs/heads/${{ env.BRANCH_PREFIX }}'
         run: ./gradlew build
-      - name: capture build artifacts (forge)
+      - name: capture build artifacts (neoforge)
         if: |
-          ${{ matrix.java == '17' }}
+          ${{ matrix.java == '21' }}
           github.ref == 'refs/heads/${{ env.BRANCH_PREFIX }}'
         uses: actions/upload-artifact@v3
         with:
-          name: Artifacts (Forge)
-          path: forge/build/libs/
+          name: Artifacts (NeoForge)
+          path: neoforge/build/libs/
       - name: capture build artifacts (fabric)
         if: |
-          ${{ matrix.java == '17' }}
+          ${{ matrix.java == '21' }}
           github.ref == 'refs/heads/${{ env.BRANCH_PREFIX }}'
         uses: actions/upload-artifact@v3
         with:
@@ -92,27 +92,27 @@ jobs:
 
           loaders: |
             fabric
-            quilt      
+            quilt
 
           dependencies: |
-            fabric-api@0.83.0+1.20.1(required){modrinth:P7dR8mSH}{curseforge:306612}#(ignore:github)
+            fabric-api@0.100.8+1.21(required){modrinth:P7dR8mSH}{curseforge:306612}#(ignore:github)
             fabric-language-kotlin@1.9.5+kotlin.1.8.22(required){modrinth:Ha28R6CL}{curseforge:308769}#(ignore:github)
 
           game-versions: "${{ steps.minecraft_version.outputs.minecraft_version }}"
           java: "${{ matrix.java }}"
 
-      - name: deploy forge! (mc-publish)
+      - name: deploy neoforge! (mc-publish)
         if: github.ref == 'refs/heads/${{ env.BRANCH_PREFIX }}'
         uses: Kir-Antipov/mc-publish@v3.3
         with:
           name: ${{ steps.mod_version.outputs.mod_version }}
 
           files: |
-            forge/build/libs/!(*-@(dev|sources|javadoc|shadow)).jar
-            forge/build/libs/*-@(dev|sources|javadoc|shadow).jar
+            neoforge/build/libs/!(*-@(dev|sources|javadoc|shadow)).jar
+            neoforge/build/libs/*-@(dev|sources|javadoc|shadow).jar
           github-files: |
-            forge/build/libs/!(*-@(dev|sources|javadoc|shadow)).jar
-            forge/build/libs/*-@(dev|sources|javadoc|shadow).jar
+            neoforge/build/libs/!(*-@(dev|sources|javadoc|shadow)).jar
+            neoforge/build/libs/*-@(dev|sources|javadoc|shadow).jar
 
           modrinth-id: oLPaySSb
           curseforge-id: 1019391
@@ -124,11 +124,10 @@ jobs:
           github-token: ${{ secrets.REPOSITORY_TOKEN }}
           github-commitish: ${{ steps.commitish.outputs.commitish }}
 
-          version: ${{ steps.mod_version.outputs.mod_version }}-forge
+          version: ${{ steps.mod_version.outputs.mod_version }}-neoforge
           changelog-file: CHANGELOG.md
 
           loaders: |
-            forge
             neoforge
 
           dependencies: |
