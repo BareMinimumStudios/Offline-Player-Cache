@@ -5,9 +5,7 @@ import com.bibireden.opc.forge.bus.OPCEventHandler
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.Mod
 
-/**
- * Main class for the mod on the Forge platform.
- */
+/** Main class for the mod on the Forge platform. */
 @Mod(OfflinePlayerCacheInitializer.MOD_ID)
 class OfflinePlayerCacheInitializerForge {
     init {
