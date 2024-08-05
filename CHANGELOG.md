@@ -1,2 +1,2 @@
 ## Changes 🌽
-- Updated to 1.21 (yes, other mods will follow suit as well).
+- Added extension (reified) functions that could prove to be useful to Kotlin users.
