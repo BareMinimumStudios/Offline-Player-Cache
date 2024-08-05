@@ -1,2 +1,2 @@
 ## Changes 🌽
-- This update just served to remove a duplicate initializer (Forge).
+- Added extension (reified) functions that could prove to be useful to Kotlin users.
